@@ -1,0 +1,7 @@
+
+
+GET http://localhost:3000/blokk/643142663
+
+###
+
+GET http://localhost:3000/api/643142663
