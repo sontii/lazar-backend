@@ -7,6 +7,6 @@ router.get("/", (req, res) => {
 	res.send("API is running");
 });
 
-router.get("/:datumtol/:datumig", blokk.vevoRange);
+router.get("/:start-:end", blokk.vevoRange);
 
 module.exports = router;

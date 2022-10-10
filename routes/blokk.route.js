@@ -7,7 +7,7 @@ router.get("/", (req, res) => {
 	res.send("API is running");
 });
 
-router.get("/:datumtol/:datumig", blokk.blokkRange);
+router.get("/:start-:end", blokk.blokkRange);
 
 
 module.exports = router;

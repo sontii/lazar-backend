@@ -8,10 +8,10 @@ const connection = mysql.createConnection({
 });
 
 exports.blokkRange = async (req, res) => {
-	const { datumtol } = req.params;
-	const { datumig } = req.params;
+	const { start } = req.params;
+	const { end } = req.params;
 	const query = `SELECT datum, egyseg, sum(bteny_ert), sum(nteny_ert), sum(nyilv_ert) FROM blokk WHERE datum BETWEEN ? AND ? GROUP BY datum, egyseg`;
-	const [rows] = await (await connection).query(query, [datumtol, datumig]);
+	const [rows] = await (await connection).query(query, [start, end]);
 	if (!rows[0]) {
 		return res.status(404).json({ msg: "Couldn't find data" });
 	}
@@ -19,10 +19,10 @@ exports.blokkRange = async (req, res) => {
 };
 
 exports.vevoRange = async (req, res) => {
-	const { datumtol } = req.params;
-	const { datumig } = req.params;
+	const { start } = req.params;
+	const { end } = req.params;
 	const query = `SELECT egyseg, COUNT(DISTINCT sorszam) AS vevoszam FROM blokk WHERE datum BETWEEN ? AND ? GROUP BY datum, egyseg`;
-	const [rows] = await (await connection).query(query, [datumtol, datumig]);
+	const [rows] = await (await connection).query(query, [start, end]);
 	if (!rows[0]) {
 		return res.status(404).json({ msg: "Couldn't find data" });
 	}
