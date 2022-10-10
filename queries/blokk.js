@@ -6,12 +6,13 @@ const connection = mysql.createConnection({
 	database: process.env.DATABASE,
 });
 
-exports.findOne = async (req, res) => {
-	const { id } = req.params;
-	const query = `SELECT * FROM blokk WHERE id=?`;
-	const [rows] = await (await connection).query(query, [id]);
+exports.blokkRange = async (req, res) => {
+	const { datumtol } = req.params;
+	const { datumig } = req.params;
+	const query = `SELECT datum, egyseg, SUM(bfogy_ar) FROM blokk WHERE datum BETWEEN ? AND ? GROUP BY datum, egyseg`;
+	const [rows] = await (await connection).query(query, [datumtol, datumig]);
 	if (!rows[0]) {
-		return res.json({ msg: "Couldn't find data" });
+		return res.status(404).json({ msg: "Couldn't find data" });
 	}
 	res.json(rows);
 };

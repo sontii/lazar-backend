@@ -7,6 +7,6 @@ router.get("/", (req, res) => {
 	res.send("Hello W");
 });
 
-router.get("/:id", blokk.findOne);
+router.get("/:datumtol/:datumig", blokk.blokkRange);
 
 module.exports = router;
