@@ -10,7 +10,7 @@ const connection = mysql.createConnection({
 exports.blokkRange = async (req, res) => {
 	const { start } = req.params;
 	const { end } = req.params;
-	const query = `SELECT datum, egyseg, sum(bteny_ert), sum(nteny_ert), sum(nyilv_ert) FROM blokk WHERE datum BETWEEN ? AND ? GROUP BY datum, egyseg`;
+	const query = `SELECT datum, egyseg, sum(bteny_ert), sum(nteny_ert) - sum(nyilv_ert) AS arres, (sum(nteny_ert) - sum(nyilv_ert))* 100 / sum(nteny_ert) AS arresSzazalek FROM blokk WHERE datum BETWEEN ? AND ? GROUP BY datum, egyseg`;
 	const [rows] = await (await connection).query(query, [start, end]);
 	if (!rows[0]) {
 		return res.status(404).json({ msg: "Couldn't find data" });
