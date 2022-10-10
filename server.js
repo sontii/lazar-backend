@@ -7,11 +7,6 @@ const router = express.Router();
 
 app.use(express.json());
 
-app.use(
-	express.urlencoded({
-		extended: true,
-	})
-);
 
 app.get("/", async (req, res) => {
     res.json({ status: "API server is running and ready to serv" });
@@ -20,7 +15,7 @@ app.get("/", async (req, res) => {
 const blokkRouter = require("./routes/blokk.route")
 app.use("/blokk", blokkRouter);
 
-var datetime = new Date();
-console.log(datetime);
+const vevoRouter = require("./routes/vevo.route");
+app.use("/vevo", vevoRouter);
 
 app.listen(port, () => console.log(`API server listening on ${port}`));
