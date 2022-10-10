@@ -1,6 +1,6 @@
 
 
-GET http://localhost:3000/blokk/643142663
+GET http://localhost:3000/blokk/2022.10.01/2022.10.02
 
 ###
 
