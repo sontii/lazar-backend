@@ -1,5 +1,5 @@
 const express = require("express");
-const blokk = require("../queries/blokk");
+const blokk = require("../queries/query");
 const router = express.Router();
 
 //GET all

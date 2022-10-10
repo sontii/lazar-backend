@@ -1,10 +1,10 @@
 const mysql = require("mysql2/promise");
 const connection = mysql.createConnection({
 	host: process.env.HOST,
-	user: process.env.USER,
+	user: process.env.USRNAME,
 	password: process.env.PASSWORD,
 	database: process.env.DATABASE,
-	dateStrings: true
+	dateStrings: true,
 });
 
 exports.blokkRange = async (req, res) => {

@@ -7,7 +7,6 @@ const router = express.Router();
 
 app.use(express.json());
 
-
 app.get("/", async (req, res) => {
     res.json({ status: "API server is running and ready to serv" });
 });
