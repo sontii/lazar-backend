@@ -1,7 +1,7 @@
 
 
-GET http://localhost:3000/blokk/2022.10.01-2022.10.05
+GET http://localhost:3000/blokk/2022.09.08-2022.09.15
 
 ###
 
-GET http://localhost:3000/vevo/2022.10.01-2022.10.01
+GET http://localhost:3000/api/vevo/2022.10.01-2022.10.01
