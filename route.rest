@@ -1,7 +1,26 @@
 
 
-GET http://localhost:3000/blokk/2022.10.01-2022.10.05
+GET http://localhost:3000/api/blokk/2022.10.01-2022.10.05
 
 ###
 
-GET http://localhost:3000/vevo/2022.10.01-2022.10.01
+GET http://localhost:3000/api/vevo/2022.10.01-2022.10.01
+
+
+###
+POST  http://localhost:3000/api/users
+Content-Type: application/json
+
+{
+    "user" : "teszt",
+    "password" : "123"
+}
+
+###
+GET  http://localhost:3000/api/users
+Content-Type: application/json
+
+{
+    "user" : "teszt",
+    "password" : "123"
+}
