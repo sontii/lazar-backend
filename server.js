@@ -7,9 +7,10 @@ const port = process.env.PORT;
 
 app.use(express.json());
 
-app.get("/api", async (req, res) => {
+app.get("/api/api", async (req, res) => {
     res.json({ status: "API server is running and ready to serv" });
 });
+
 
 const blokkRouter = require("./routes/blokk")
 app.use("/api/blokk", blokkRouter);
