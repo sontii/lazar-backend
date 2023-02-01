@@ -18,7 +18,12 @@ app.use("/api/blokk", blokkRouter);
 const vevoRouter = require("./routes/vevo");
 app.use("/api/vevo", vevoRouter);
 
-const usersRouter = require("./routes/users")
-app.use("/api/users", usersRouter)
+const loginRouter = require("./routes/login")
+app.use("/api/login", loginRouter)
+
+const registerRouter = require("./routes/register")
+app.use("/api/register", registerRouter)
 
 app.listen(port, () => console.log(`API server listening on ${port}`));
+
+console.log(port)

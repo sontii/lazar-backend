@@ -8,10 +8,9 @@ const connection = mysql.createConnection({
 	dateStrings: true,
 })
 
-//get users date range
-exports.userGet = async (req, res) => {
+//Login user send back token
+exports.loginPost = async (req, res) => {
 
-	
 	try {
 		// "?" in query for sanitaze query params
 		const query = `SELECT user, password FROM users WHERE user = ?`
@@ -36,24 +35,6 @@ exports.userGet = async (req, res) => {
 		}
 
 	} catch(err) {
-		res.status(500).send(err.message)
-	}
-}
-
-//get users date range
-exports.userPost = async (req, res) => {
-	try{
-		//create hashed password from body password
-		const hashedPassword = await bcrypt.hash(req.body.password ,10)
-		// "?" in query for sanitaze query params
-		const query = `INSERT INTO users (user, password) VALUES (?, ?)`
-		const [rows] = await (
-			await connection
-		).query(query, [req.body.user, hashedPassword])
-		// [param?, param?] to "?" in query params
-		
-		res.status(201).send()
-	} catch(err) {	
 		res.status(500).send(err.message)
 	}
 }
