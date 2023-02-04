@@ -1,8 +1,9 @@
 require("dotenv").config()
 const express = require('express')
 const bcrypt = require("bcrypt")
+const jwt = require("jsonwebtoken")
 const app = express()
-const port = process.env.PORT
+const port = process.env.AUTH_PORT
 const mysql = require("mysql2/promise")
 const connection = mysql.createConnection({
 	host: process.env.HOST,
@@ -14,12 +15,12 @@ const connection = mysql.createConnection({
 
 //const router = express.Router();
 
-app.use(json())
+app.use(express.json())
 
 let refreshTokens = []
 
 app.get("/api/auth", async (req, res) => {
-    res.json({ status: "API server is running and ready to serv" })
+    res.json({ status: "AUTH server is running and ready to serv" })
 });
 
 app.post("/token", (req, res) => {
@@ -45,13 +46,13 @@ app.post("/login", async (req, res) => {
 		email: postData.email,
 		password: postData.password,
 	}
-
+	
+	
     try {
 		// "?" in query for sanitaze query params
 		const query = `SELECT user, password FROM users WHERE user = ?`
 		const [queryResult] = await (await connection).query(query, [user.email])
 		// [param?] to "?" in query params
-
 
 		//if no user
 		if (!queryResult[0]) {
@@ -64,8 +65,8 @@ app.post("/login", async (req, res) => {
 
 				const accessToken = generateAccessToken(user)
 
-				const refreshToken = jwt.sign(user, config.refreshTokenSecret, {
-					expiresIn: config.jwtRefreshExpiration,
+				const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET, {
+					expiresIn: process.env.JWT_REFRESH_EXPIRATION,
 				})
                 refreshTokens.push(refreshToken)
 
@@ -78,7 +79,8 @@ app.post("/login", async (req, res) => {
 			} else {
 				res.status(404).send('Not allowed')
 			}
-		} catch {
+		} catch(err) {
+			console.log(err)
 			res.status(500).send()
 		}
 
@@ -89,11 +91,9 @@ app.post("/login", async (req, res) => {
 })
 
 function generateAccessToken(user) {
-	return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
-		expiresIn: config.jwtRefreshExpiration,
+	return jwt.sign(user, process.env.ACCES_TOKEN_SECRET, {
+		expiresIn: process.env.JWT_ACCES_EXPIRATION,
 	})
 }
 
-
 app.listen(port)
-

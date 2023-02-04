@@ -1,25 +1,25 @@
-require("dotenv").config()
+require('dotenv').config()
 const express = require('express')
 const app = express()
-const port = process.env.PORT
+const port = process.env.API_PORT
 //const router = express.Router();
 
-app.use(json())
+app.use(express.json())
 
 app.get("/api", async (req, res) => {
     res.json({ status: "API server is running and ready to serv" })
 })
 
-import blokkRouter from "./routes/blokk"
+const blokkRouter = require('./routes/blokk')
 app.use("/api/blokk", blokkRouter)
 
-import vevoRouter from "./routes/vevo"
+const vevoRouter = require('./routes/vevo')
 app.use("/api/vevo", vevoRouter)
 
-import loginRouter from "./routes/login"
-app.use("/api/login", loginRouter)
-
-import registerRouter from "./routes/register"
+const registerRouter = require('./routes/register')
 app.use("/api/register", registerRouter)
+
+/* const loginRouter = require('./routes/login')
+app.use("/api/login", loginRouter) */
 
 app.listen(port, () => console.log(`API server listening on ${port}`))
