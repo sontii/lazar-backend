@@ -71,7 +71,7 @@ app.post("/api/login", async (req, res) => {
                 refreshTokens.push(refreshToken)
 
 
-				res.status(201).send({
+				res.status(200).send({
 					email: user.email,
 					accessToken: accessToken,
 					refreshToken: refreshToken,
