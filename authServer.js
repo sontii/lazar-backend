@@ -19,11 +19,11 @@ app.use(express.json())
 
 let refreshTokens = []
 
-app.get("/api/auth", async (req, res) => {
+app.get("/api", async (req, res) => {
     res.json({ status: "AUTH server is running and ready to serv" })
 });
 
-app.post("/token", (req, res) => {
+app.post("api/token", (req, res) => {
 	const refreshToken = req.body.token
 	if (refreshToken == null) return res.sendStatus(401)
 	if (!refreshTokens.includes(refreshToken)) return res.sendStatus(403)
@@ -34,12 +34,12 @@ app.post("/token", (req, res) => {
 	})
 })
 
-app.delete("/logout", (req, res) => {
+app.delete("api/logout", (req, res) => {
 	refreshTokens = refreshTokens.filter((token) => token !== req.body.token)
 	res.sendStatus(204)
 })
 
-app.post("/login", async (req, res) => {
+app.post("api/login", async (req, res) => {
 	// Authenticate User
 	const postData = req.body
 	const user = {
