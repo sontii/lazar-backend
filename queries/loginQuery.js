@@ -1,4 +1,6 @@
 const bcrypt = require("bcrypt")
+const config = require("../config/auth.config")
+const jwt = require("jsonwebtoken")
 const mysql = require("mysql2/promise")
 const connection = mysql.createConnection({
 	host: process.env.HOST,
@@ -10,11 +12,16 @@ const connection = mysql.createConnection({
 
 //Login user send back token
 exports.loginPost = async (req, res) => {
+	const postData = req.body
+	const user = {
+		email: postData.email,
+		password: postData.password
+	}
 
 	try {
 		// "?" in query for sanitaze query params
 		const query = `SELECT user, password FROM users WHERE user = ?`
-		const [queryResult] = await (await connection).query(query, [req.body.user])
+		const [queryResult] = await (await connection).query(query, [user.email])
 		// [param?] to "?" in query params
 
 
@@ -25,8 +32,22 @@ exports.loginPost = async (req, res) => {
 		
 		//compare hashed password
 		try{
-			if(await bcrypt.compare(req.body.password, queryResult[0].password)){
-				res.status(201).send('Succes')
+			if(await bcrypt.compare(user.password, queryResult[0].password)){
+
+				const token = jwt.sign(user, config.accesTokenSecret, {
+					expiresIn: config.jwtExpiration,
+				})
+
+				const refreshToken = jwt.sign(user, config.refreshTokenSecret, {
+					expiresIn: config.jwtRefreshExpiration,
+				})
+
+
+				res.status(201).send({
+					email: req.body.user,
+					accessToken: token,
+					refreshToken: refreshToken,
+				})
 			} else {
 				res.status(404).send('Not allowed')
 			}
