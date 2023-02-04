@@ -8,9 +8,10 @@
 
 This application stand for make api endpoint for mysql database backend.
 
-- blokk/:date/:date
-- vevo/:date/:date
-- users/
+- api/blokk/:date/:date
+- api/vevo/:date/:date
+- api/login
+- api/signup
 ---
 
 #### **Requirements:**
