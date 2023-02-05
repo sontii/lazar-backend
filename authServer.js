@@ -1,5 +1,6 @@
 require("dotenv").config()
 const express = require('express')
+const cors = require("cors")
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 const app = express()
@@ -14,6 +15,8 @@ const connection = mysql.createConnection({
 })
 
 //const router = express.Router();
+
+app.use(cors())
 
 app.use(express.json())
 
