@@ -59,7 +59,7 @@ app.post("/api/login", async (req, res) => {
 
 		//if no user
 		if (!queryResult[0]) {
-			return res.status(404).json({ msg: "Cannot find user" })
+			return res.status(404).send({msg: 'Cannot find user'})
 		}
 		
 		//compare hashed password
@@ -80,17 +80,14 @@ app.post("/api/login", async (req, res) => {
 					refreshToken: refreshToken,
 				})
 			} else {
-				res.status(404).send('Not allowed')
+				res.status(404)
 			}
 		} catch(err) {
-			console.log(err)
-			res.status(500).send()
+			res.status(500).send({msg: "Server error"})
 		}
 
 	} catch(err) {
-		res.status(500).send(err.message)
-	} finally {
-		connection.release()
+		res.status(500).send({msg: "Server error"})
 	}
 
 })
