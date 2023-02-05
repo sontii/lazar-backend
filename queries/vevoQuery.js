@@ -13,13 +13,18 @@ exports.vevoRange = async (req, res) => {
 	const { start } = req.params
 	const { end } = req.params
 
-	// "?" in query for sanitaze query params
-	const query = `SELECT egyseg, COUNT(DISTINCT sorszam) AS vevoszam FROM blokk WHERE datum BETWEEN ? AND ? GROUP BY datum, egyseg`
-	const [rows] = await (await connection).query(query, [start, end])
 
-	// [start end] to "?" in query params
-	if (!rows[0]) {
-		return res.status(404).json({ msg: "Couldn't find data" })
+	try{
+		// "?" in query for sanitaze query params
+		const query = `SELECT egyseg, COUNT(DISTINCT sorszam) AS vevoszam FROM blokk WHERE datum BETWEEN ? AND ? GROUP BY datum, egyseg`
+		const [rows] = await (await connection).query(query, [start, end])
+
+		// [start end] to "?" in query params
+		if (!rows[0]) {
+			return res.status(404).json({ msg: "Couldn't find data" })
+		}
+		res.json(rows)
+	} catch (err) {
+		res.status(500).send(err)
 	}
-	res.json(rows)
 };

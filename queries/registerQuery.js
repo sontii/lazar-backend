@@ -24,5 +24,7 @@ exports.register = async (req, res) => {
 		res.status(201).send()
 	} catch(err) {	
 		res.status(500).send(err.message)
+	} finally {
+		connection.release()
 	}
 }
