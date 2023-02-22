@@ -33,13 +33,17 @@ exports.loginPost = async (req, res) => {
 		try{
 			if(await bcrypt.compare(user.password, queryResult[0].password)){
 
-				const token = jwt.sign(user.email, process.env.accesTokenSecret, {
-					expiresIn: process.env.jwtExpiration,
+				const token = jwt.sign(user.email, process.env.ACCES_TOKEN_SECRET, {
+					expiresIn: process.env.JWT_ACCES_EXPIRATION,
 				})
 
-				const refreshToken = jwt.sign(user.email, process.env.refreshTokenSecret, {
-					expiresIn: process.env.jwtRefreshExpiration,
-				})
+				const refreshToken = jwt.sign(
+					user.email,
+					process.env.REFRESH_TOKEN_SECRET,
+					{
+						expiresIn: process.env.JWT_REFRESH_EXPIRATION,
+					}
+				)
 
 
 				res.status(201).send({
