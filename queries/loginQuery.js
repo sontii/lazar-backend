@@ -1,5 +1,4 @@
 const bcrypt = require("bcrypt")
-const config = require("../config/auth.config")
 const jwt = require("jsonwebtoken")
 const mysql = require("mysql2/promise")
 const connection = mysql.createConnection({
@@ -34,12 +33,12 @@ exports.loginPost = async (req, res) => {
 		try{
 			if(await bcrypt.compare(user.password, queryResult[0].password)){
 
-				const token = jwt.sign(user, config.accesTokenSecret, {
-					expiresIn: config.jwtExpiration,
+				const token = jwt.sign(user.email, process.env.accesTokenSecret, {
+					expiresIn: process.env.jwtExpiration,
 				})
 
-				const refreshToken = jwt.sign(user, config.refreshTokenSecret, {
-					expiresIn: config.jwtRefreshExpiration,
+				const refreshToken = jwt.sign(user.email, process.env.refreshTokenSecret, {
+					expiresIn: process.env.jwtRefreshExpiration,
 				})
 
 
@@ -51,8 +50,8 @@ exports.loginPost = async (req, res) => {
 			} else {
 				res.status(404).send('Not allowed')
 			}
-		} catch {
-			res.status(500).send()
+		} catch(err) {
+			res.status(500).send(err.message)
 		}
 
 	} catch(err) {

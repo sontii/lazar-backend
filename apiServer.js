@@ -21,7 +21,7 @@ app.use("/api/vevo", vevoRouter)
 const registerRouter = require('./routes/register')
 app.use("/api/register", registerRouter)
 
-/* const loginRouter = require('./routes/login')
-app.use("/api/login", loginRouter) */
+const loginRouter = require('./routes/login')
+app.use("/api/login", loginRouter)
 
 app.listen(port, '0.0.0.0')
