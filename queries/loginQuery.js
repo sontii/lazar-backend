@@ -51,7 +51,7 @@ exports.loginPost = async (req, res) => {
 
 
 				res.status(201).send({
-					email: req.body.user,
+					email: req.body.email,
 					accessToken: token,
 					refreshToken: refreshToken,
 				})
