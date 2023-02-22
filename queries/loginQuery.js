@@ -32,13 +32,17 @@ exports.loginPost = async (req, res) => {
 		//compare hashed password
 		try{
 			if(await bcrypt.compare(user.password, queryResult[0].password)){
-
-				const token = jwt.sign(user.email, process.env.ACCES_TOKEN_SECRET, {
-					expiresIn: process.env.JWT_ACCES_EXPIRATION,
-				})
+				console.log(process.env.JWT_ACCES_EXPIRATION)
+				const token = jwt.sign(
+					{user: user.email},
+					process.env.ACCES_TOKEN_SECRET, 
+					{
+						expiresIn: process.env.JWT_ACCES_EXPIRATION,
+					}
+				)
 
 				const refreshToken = jwt.sign(
-					user.email,
+					{user: user.email},
 					process.env.REFRESH_TOKEN_SECRET,
 					{
 						expiresIn: process.env.JWT_REFRESH_EXPIRATION,
