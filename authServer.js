@@ -14,8 +14,6 @@ const connection = mysql.createConnection({
 	dateStrings: true,
 })
 
-//const router = express.Router();
-
 app.use(cors())
 
 app.use(express.json())
@@ -26,6 +24,8 @@ app.get("/api", async (req, res) => {
     res.json({ status: "AUTH server is running and ready to serv" })
 });
 
+
+//generate new access token from valid refresh token
 app.post("/api/token", (req, res) => {
 	const refreshToken = req.body.token
 	if (refreshToken == null) return res.sendStatus(401)
@@ -37,9 +37,23 @@ app.post("/api/token", (req, res) => {
 	})
 })
 
-app.delete("/api/logout", (req, res) => {
-	refreshTokens = refreshTokens.filter((token) => token !== req.body.token)
-	res.sendStatus(204)
+
+app.post("/api/register", async (req, res) => {
+	// Authenticate User
+	try {
+		//create hashed password from body password
+		const hashedPassword = await bcrypt.hash(req.body.password, 10)
+		// "?" in query for sanitaze query params
+		const query = `INSERT INTO users (user, password) VALUES (?, ?)`
+		const [rows] = await (
+			await connection
+		).query(query, [req.body.user, hashedPassword])
+		// [param?, param?] to "?" in query params
+
+		res.status(201).send()
+	} catch (err) {
+		res.status(500).send(err.message)
+	} 
 })
 
 app.post("/api/login", async (req, res) => {
@@ -74,13 +88,13 @@ app.post("/api/login", async (req, res) => {
                 refreshTokens.push(refreshToken)
 
 
-				res.status(200).send({
-					email: user.email,
+				res.status(201).send({
+					email: req.body.email,
 					accessToken: accessToken,
 					refreshToken: refreshToken,
 				})
 			} else {
-				res.status(404)
+				res.status(404).send("Not allowed")
 			}
 		} catch(err) {
 			res.status(500).send({msg: "Server error"})
