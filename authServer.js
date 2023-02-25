@@ -5,14 +5,8 @@ const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 const app = express()
 const port = process.env.AUTH_PORT
-const mysql = require("mysql2/promise")
-const connection = mysql.createConnection({
-	host: process.env.HOST,
-	user: process.env.USRNAME,
-	password: process.env.PASSWORD,
-	database: process.env.DATABASE,
-	dateStrings: true,
-})
+
+const pool = require("./config/db")
 
 app.use(cors())
 
@@ -41,7 +35,7 @@ app.post("/api/auth/register", async (req, res) => {
 	try {
 		// "?" in query for sanitaze query params
 		const query = `SELECT user FROM users WHERE user = ?`
-		const [queryResult] = await (await connection).query(query, [req.body.email])
+		const [queryResult] = await pool.query(query, [req.body.email])
 		// [param?] to "?" in query params
 
 		//if no user
@@ -59,9 +53,7 @@ app.post("/api/auth/register", async (req, res) => {
 		const hashedPassword = await bcrypt.hash(req.body.password, 10)
 		// "?" in query for sanitaze query params
 		const query = `INSERT INTO users (user, password) VALUES (?, ?)`
-		const [rows] = await (
-			await connection
-		).query(query, [req.body.email, hashedPassword])
+		const [rows] = await pool.query(query, [req.body.email, hashedPassword])
 		// [param?, param?] to "?" in query params
 
 		res.status(201).send()
@@ -81,7 +73,7 @@ app.post("/api/auth/login", async (req, res) => {
 	try {
 		// "?" in query for sanitaze query params
 		const query = `SELECT user, password, isadmin FROM users WHERE user = ?`
-		const [queryResult] = await (await connection).query(query, [user.email])
+		const [queryResult] = await pool.query(query, [user.email])
 		// [param?] to "?" in query params
 
 		//if no user
