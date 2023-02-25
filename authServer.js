@@ -86,7 +86,7 @@ app.post("/api/auth/login", async (req, res) => {
 		try {
 			//compare hashed password
 			if (await bcrypt.compare(user.password, queryResult[0].password)) {
-				const accessToken = generateAccessToken(user.email)
+				const accessToken = generateAccessToken(user)
 
 				const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET, {
 					expiresIn: process.env.JWT_REFRESH_EXPIRATION,
@@ -102,6 +102,7 @@ app.post("/api/auth/login", async (req, res) => {
 				res.status(404).send("Not allowed")
 			}
 		} catch (err) {
+			console.log(err)
 			res.status(500).send({ msg: "Server error" })
 		}
 	} catch (err) {
@@ -110,8 +111,9 @@ app.post("/api/auth/login", async (req, res) => {
 })
 
 function generateAccessToken(user) {
-	return jwt.sign(user, process.env.ACCES_TOKEN_SECRET, {
-		expiresIn: process.env.JWT_ACCES_EXPIRATION,
+	return jwt.sign(user, process.env.ACCES_TOKEN_SECRET,
+		{
+		expiresIn: process.env.JWT_ACCES_EXPIRATION
 	})
 }
 
