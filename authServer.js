@@ -86,7 +86,7 @@ app.post("/api/auth/login", async (req, res) => {
 		try {
 			//compare hashed password
 			if (await bcrypt.compare(user.password, queryResult[0].password)) {
-				const accessToken = generateAccessToken(user)
+				const accessToken = generateAccessToken(user.email)
 
 				const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET, {
 					expiresIn: process.env.JWT_REFRESH_EXPIRATION,
