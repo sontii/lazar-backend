@@ -21,10 +21,15 @@ app.get("/api", async (req, res) => {
 //generate new access token from valid refresh token
 app.post("/api/auth/token", (req, res) => {
 	const refreshToken = req.body.token
+	const tokenUser = {
+		email: req.body.email,
+		isAdmin: jwt.decode(refreshToken).isAdmin
+	}
 	if (refreshToken == null) return res.sendStatus(401)
 	jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
 		if (err) return res.sendStatus(403)
-		const accessToken = generateAccessToken({ user: req.body.email })
+		
+		const accessToken = generateAccessToken(tokenUser)
 		res.json({ accessToken: accessToken })
 	})
 })
@@ -65,7 +70,10 @@ app.post("/api/auth/register", async (req, res) => {
 app.post("/api/auth/login", async (req, res) => {
 	// Authenticate User
 	const postData = req.body
-	
+	const user = {
+		email: postData.email,
+		password: postData.password,
+	}
 
 	try {
 		// "?" in query for sanitaze query params
@@ -78,17 +86,18 @@ app.post("/api/auth/login", async (req, res) => {
 			return res.status(404).send({ msg: "Cannot find user" })
 		}
 
-		const user = {
+		//generating new object for user, dont want to sotre password information in jwt
+		tokenUser = {
 			email: postData.email,
-			isAdmin: queryResult[0].isadmin,
+			isAdmin: queryResult[0].isadmin
 		}
-
+		
 		try {
 			//compare hashed password
 			if (await bcrypt.compare(user.password, queryResult[0].password)) {
-				const accessToken = generateAccessToken(user)
+				const accessToken = generateAccessToken(tokenUser)
 
-				const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET, {
+				const refreshToken = jwt.sign(tokenUser, process.env.REFRESH_TOKEN_SECRET, {
 					expiresIn: process.env.JWT_REFRESH_EXPIRATION,
 				})
 
@@ -101,15 +110,16 @@ app.post("/api/auth/login", async (req, res) => {
 			}
 		} catch (err) {
 			console.log(err)
-			res.status(500).send({ msg: "Server error" })
+			res.status(500).send({ msg: err.message })
 		}
 	} catch (err) {
-		res.status(500).send({ msg: "Server error" })
+		console.log(err)
+		res.status(500).send({ msg: err.message })
 	}
 })
 
-function generateAccessToken(user) {
-	return jwt.sign(user, process.env.ACCES_TOKEN_SECRET,
+function generateAccessToken(tokenUser) {
+	return jwt.sign(tokenUser, process.env.ACCES_TOKEN_SECRET,
 		{
 		expiresIn: process.env.JWT_ACCES_EXPIRATION
 	})
