@@ -65,10 +65,7 @@ app.post("/api/auth/register", async (req, res) => {
 app.post("/api/auth/login", async (req, res) => {
 	// Authenticate User
 	const postData = req.body
-	const user = {
-		email: postData.email,
-		password: postData.password,
-	}
+	
 
 	try {
 		// "?" in query for sanitaze query params
@@ -81,7 +78,10 @@ app.post("/api/auth/login", async (req, res) => {
 			return res.status(404).send({ msg: "Cannot find user" })
 		}
 
-		const isAdmin = queryResult[0].isadmin
+		const user = {
+			email: postData.email,
+			isAdmin: queryResult[0].isadmin,
+		}
 
 		try {
 			//compare hashed password
@@ -93,10 +93,8 @@ app.post("/api/auth/login", async (req, res) => {
 				})
 
 				res.status(201).send({
-					email: req.body.email,
 					accessToken: accessToken,
 					refreshToken: refreshToken,
-					isadmin: isAdmin
 				})
 			} else {
 				res.status(404).send("Not allowed")
