@@ -25,9 +25,9 @@ app.post("/api/auth/token", (req, res) => {
 		email: jwt.decode(JSON.parse(refreshToken)).email,
 		isAdmin: jwt.decode(JSON.parse(refreshToken)).isAdmin,
 	}
-	jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
+	jwt.verify(JSON.parse(refreshToken), process.env.REFRESH_TOKEN_SECRET, (err, user) => {
 		if (err) return res.sendStatus(403)
-		
+
 		const accessToken = generateAccessToken(tokenUser)
 		res.json({ accessToken: accessToken })
 	})
