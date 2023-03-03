@@ -21,11 +21,11 @@ app.get("/api", async (req, res) => {
 //generate new access token from valid refresh token
 app.post("/api/auth/token", (req, res) => {
 	const refreshToken = req.body.token
+	if (refreshToken == null) return res.sendStatus(401)
 	const tokenUser = {
 		email: req.body.email,
 		isAdmin: jwt.decode(refreshToken).isAdmin
 	}
-	if (refreshToken == null) return res.sendStatus(401)
 	jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
 		if (err) return res.sendStatus(403)
 		
