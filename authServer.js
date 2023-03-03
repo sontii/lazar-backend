@@ -17,14 +17,13 @@ app.get("/api", async (req, res) => {
     res.json({ status: "AUTH server is running and ready to serv" })
 });
 
-
 //generate new access token from valid refresh token
 app.post("/api/auth/token", (req, res) => {
 	const refreshToken = req.body.token
 	if (refreshToken == null) return res.sendStatus(401)
 	const tokenUser = {
-		email: req.body.email,
-		isAdmin: jwt.decode(refreshToken).isAdmin
+		email: jwt.decode(JSON.parse(refreshToken)).email,
+		isAdmin: jwt.decode(JSON.parse(refreshToken)).isAdmin,
 	}
 	jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
 		if (err) return res.sendStatus(403)
