@@ -22,10 +22,10 @@ app.post("/api/auth/token", (req, res) => {
 	const refreshToken = req.body.token
 	if (refreshToken == null) return res.sendStatus(401)
 	const tokenUser = {
-		email: jwt.decode(JSON.parse(refreshToken)).email,
-		isAdmin: jwt.decode(JSON.parse(refreshToken)).isAdmin,
+		email: jwt.decode(refreshToken).email,
+		isAdmin: jwt.decode(refreshToken).isAdmin,
 	}
-	jwt.verify(JSON.parse(refreshToken), process.env.REFRESH_TOKEN_SECRET, (err, user) => {
+	jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
 		if (err) return res.sendStatus(403)
 
 		const accessToken = generateAccessToken(tokenUser)
