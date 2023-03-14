@@ -7,8 +7,8 @@ exports.blokkRange = async (req, res) => {
 
 	try {
 		// '?' in query for sanitaze query params
-		const query = `SELECT datum, egyseg, sum(bteny_ert) AS fogyar, sum(nteny_ert) - sum(nyilv_ert) AS arres, (sum(nteny_ert) - 
-						sum(nyilv_ert))* 100 / sum(nteny_ert) AS arresSzazalek 
+		const query = `SELECT datum, egyseg, FORMAT(sum(bteny_ert), 0) AS fogyar, FORMAT(sum(nteny_ert) - sum(nyilv_ert), 0) AS arres, CONCAT(FORMAT((sum(nteny_ert) - 
+						sum(nyilv_ert))* 100 / sum(nteny_ert), 0), '%') AS arresSzazalek 
 						FROM blokk WHERE datum BETWEEN ? AND ? GROUP BY datum, egyseg`
 
 		// [start end] to '?' in query params
