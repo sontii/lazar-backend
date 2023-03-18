@@ -18,6 +18,6 @@ app.get("/api", async (req, res) => {
 
 app.use("/api/blokk", blokkRouter)
 
-app.use("/api/vevo", vevoRouter)
+//app.use("/api/vevo", vevoRouter)
 
 app.listen(port, '0.0.0.0')
