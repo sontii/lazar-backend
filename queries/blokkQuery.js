@@ -1,9 +1,17 @@
 const pool = require('../config/db')
+const bcrypt = require("bcrypt")
+const jwt = require("jsonwebtoken")
 
 //get blokkk date range
 exports.blokkRange = async (req, res) => {
 	const { start } = req.params
 	const { end } = req.params
+	const accessToken = req.body.accesstoken
+	if (accessToken == null) return res.sendStatus(403)
+
+	jwt.verify(accessToken, process.env.ACCES_TOKEN_SECRET, (err) => {
+		if (err) return res.sendStatus(403)
+	})
 
 	try {
 		// '?' in query for sanitaze query params

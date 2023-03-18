@@ -18,14 +18,32 @@ app.get("/api", async (req, res) => {
 });
 
 //generate new access token from valid refresh token
-app.post("/api/auth/token", (req, res) => {
+app.post("/api/auth/token", async (req, res) => {
 	const refreshToken = req.body.token
 	if (refreshToken == null) return res.sendStatus(401)
 	const tokenUser = {
 		email: jwt.decode(refreshToken).email,
 		isAdmin: jwt.decode(refreshToken).isAdmin,
 	}
-	jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
+
+	//check user in database
+	try {
+		// "?" in query for sanitaze query params
+		const query = `SELECT user FROM users WHERE user = ?`
+		const [queryResult] = await pool.query(query, [tokenUser.email])
+		// [param?] to "?" in query params
+
+		//if no user
+		if (queryResult[0]) {
+			return res.sendStatus(403)
+		}
+
+	} catch (err) {
+		res.status(500).send({ msg: "Server error" })
+	}
+
+	// verify refresh token then generate access token
+	jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err) => {
 		if (err) return res.sendStatus(403)
 
 		const accessToken = generateAccessToken(tokenUser)
