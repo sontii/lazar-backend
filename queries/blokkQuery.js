@@ -9,9 +9,16 @@ exports.blokkRange = async (req, res) => {
 
 	try {
 		// '?' in query for sanitaze query params
-		const query = `SELECT DATE_FORMAT(datum, "%Y.%m.%d") AS datum, egyseg, FORMAT(sum(bteny_ert), 0) AS fogyar, FORMAT(sum(nteny_ert) - sum(nyilv_ert), 0) AS arres, FORMAT((sum(nteny_ert) - 
-						sum(nyilv_ert))* 100 / sum(nteny_ert), 2) AS arresSzazalek, COUNT(DISTINCT sorszam) AS vevoszam
-						FROM blokk WHERE datum BETWEEN ? AND ? GROUP BY datum, egyseg`
+		const query = `SELECT DATE_FORMAT(datum, "%Y.%m.%d") AS datum,
+						egyseg,
+						FORMAT(@fogyar := sum(bteny_ert), 0) AS fogyar,
+						FORMAT(@arres := sum(nteny_ert) - sum(nyilv_ert), 0) AS arres,
+						FORMAT((sum(nteny_ert) - sum(nyilv_ert))* 100 / sum(nteny_ert), 2) AS arresSzazalek,
+						COUNT(DISTINCT sorszam) AS vevoszam,
+						FORMAT((@fogyar - @arres), 0) AS nettoarres
+						FROM blokk 
+						WHERE datum BETWEEN ? AND ?
+						GROUP BY datum, egyseg`
 
 		// [start end] to '?' in query params
 		const [rows] = await pool.query(query, [start, end])
