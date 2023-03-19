@@ -15,7 +15,7 @@ exports.blokkRange = async (req, res) => {
 						FORMAT(@arres := sum(nteny_ert) - sum(nyilv_ert), 0) AS arres,
 						FORMAT((sum(nteny_ert) - sum(nyilv_ert))* 100 / sum(nteny_ert), 2) AS arresSzazalek,
 						COUNT(DISTINCT sorszam) AS vevoszam,
-						FORMAT((@fogyar - @arres), 0) AS nettoarres
+						FORMAT((@fogyar - @arres), 0) AS nettofogyar
 						FROM blokk 
 						WHERE datum BETWEEN ? AND ?
 						GROUP BY datum, egyseg`
