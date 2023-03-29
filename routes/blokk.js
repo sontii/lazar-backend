@@ -8,6 +8,6 @@ router.get('/', (req, res) => {
 	res.send('API is running')
 });
 
-router.get('/:start-:end', authenticateToken, blokk.blokkRange)
+router.get('/:start/:end', authenticateToken, blokk.blokkRange)
 
 module.exports = router
