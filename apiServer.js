@@ -5,7 +5,6 @@ const jwt = require("jsonwebtoken")
 const app = express()
 const port = process.env.API_PORT
 const blokkRouter = require('./routes/blokk')
-const vevoRouter = require('./routes/vevo')
 
 //const router = express.Router();
 
