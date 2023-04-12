@@ -1,10 +1,10 @@
 require('dotenv').config()
 const express = require('express')
 const cors = require("cors")
-const jwt = require("jsonwebtoken")
 const app = express()
 const port = process.env.API_PORT
 const blokkRouter = require('./routes/blokk')
+const cikkCsoportRouter = require('./routes/cikkCsoport')
 
 //const router = express.Router();
 
@@ -17,6 +17,6 @@ app.get("/api", async (req, res) => {
 
 app.use("/api/blokk", blokkRouter)
 
-//app.use("/api/vevo", vevoRouter)
+app.use("/api/cikkcs", cikkCsoportRouter)
 
 app.listen(port, '0.0.0.0')
