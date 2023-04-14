@@ -1,8 +1,6 @@
 const pool = require('../config/db')
-const bcrypt = require("bcrypt")
-const jwt = require("jsonwebtoken")
 
-//get blokkk date range
+//get cikk date range by csoport
 exports.cikkCsoport = async (req, res) => {
 	const { start } = req.params
 	const { end } = req.params

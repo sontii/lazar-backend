@@ -1,6 +1,4 @@
 const pool = require('../config/db')
-const bcrypt = require("bcrypt")
-const jwt = require("jsonwebtoken")
 
 //get blokkk date range
 exports.blokkRange = async (req, res) => {
