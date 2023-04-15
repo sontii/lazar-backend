@@ -1,3 +1,4 @@
+const { json } = require('express')
 const pool = require('../config/db')
 
 //get blokkk date range
@@ -12,7 +13,44 @@ exports.nomenklatura = async (req, res) => {
 		if (!rows[0]) {
 			return res.status(404).json({ msg: `Couldn't find data` })
 		}
-		res.json(rows)
+
+		const mutateRow = []
+		mutateRow.push({
+			name: "",
+			children: [],
+			id: 0,
+			parent: null,
+		})
+
+		rows.map((row) => {
+			if(row.kod === "01"){
+				return
+			} else if (row.kod === "TALK"){
+				return
+			} else if(row.kod.substring(0,1) === 7){
+				return
+			} else {
+				let parentId = 0
+				let childrenArray = []
+				
+				rows.map(inRow => {
+					if(row.kod.substring(0, row.kod.length -2) === inRow.kod){
+						parentId = inRow.id
+					}
+					if(inRow.kod.length > row.kod.length){
+						if(inRow.kod.substring(0, row.kod.length) === row.kod){
+							childrenArray.push(inRow.id)
+						}
+					}
+				})
+
+				mutateRow.push({ name: row.nev, children: childrenArray, id: row.id, parent: parentId })
+			}
+		})
+
+	
+
+		res.json(mutateRow)
 	} catch (err) {
 		res.status(500).send(err)
 	}
