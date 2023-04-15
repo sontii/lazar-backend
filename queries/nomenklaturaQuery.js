@@ -27,7 +27,7 @@ exports.nomenklatura = async (req, res) => {
 				return
 			} else if (row.kod === "TALK"){
 				return
-			} else if(row.kod.substring(0,1) === 7){
+			} else if(row.kod.substring(0,1) === "7"){
 				return
 			} else {
 				let parentId = 0
@@ -37,7 +37,7 @@ exports.nomenklatura = async (req, res) => {
 					if(row.kod.substring(0, row.kod.length -2) === inRow.kod){
 						parentId = inRow.id
 					}
-					if(inRow.kod.length > row.kod.length){
+					if(inRow.szint === row.szint + 1){
 						if(inRow.kod.substring(0, row.kod.length) === row.kod){
 							childrenArray.push(inRow.id)
 						}
