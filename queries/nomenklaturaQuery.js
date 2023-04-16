@@ -6,7 +6,7 @@ exports.nomenklatura = async (req, res) => {
 	
 	try {
 		// '?' in query for sanitaze query params
-		const query = `SELECT * FROM nomenklatura;`
+		const query = `SELECT * FROM nomenklatura LIMIT 50;`
 
 		const [rows] = await pool.query(query)
 
