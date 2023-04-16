@@ -39,7 +39,7 @@ exports.nomenklatura = async (req, res) => {
 					}
 					if(inRow.szint === row.szint + 1){
 						if(inRow.kod.substring(0, row.kod.length) === row.kod){
-							childrenArray.push({name: inRow.kod})
+							childrenArray.push(inRow.id)
 						}
 					}
 				})
