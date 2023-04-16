@@ -17,7 +17,7 @@ exports.nomenklatura = async (req, res) => {
 		const mutateRow = []
 		mutateRow.push({
 			name: "",
-			children: [],
+			children: [1372174, 1372175, 1372176],
 			id: 0,
 			parent: null,
 		})
