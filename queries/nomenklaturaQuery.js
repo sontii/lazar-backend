@@ -23,13 +23,7 @@ exports.nomenklatura = async (req, res) => {
 		})
 
 		rows.map((row) => {
-			if(row.kod === "01"){
-				return
-			} else if (row.kod === "TALK"){
-				return
-			} else if(row.kod.substring(0,1) === "7"){
-				return
-			} else {
+			
 				let parentId = 0
 				let childrenArray = []
 				
@@ -46,7 +40,7 @@ exports.nomenklatura = async (req, res) => {
 
 				mutateRow.push({ name: row.nev, children: childrenArray, id: row.id, parent: parentId })
 			}
-		})
+		)
 
 	
 
