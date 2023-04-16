@@ -6,7 +6,7 @@ exports.nomenklatura = async (req, res) => {
 	
 	try {
 		// '?' in query for sanitaze query params
-		const query = `SELECT * FROM nomenklatura;`
+		const query = `SELECT id AS id2, kod, nev, szint FROM nomenklatura;`
 
 		const [rows] = await pool.query(query)
 
@@ -17,9 +17,11 @@ exports.nomenklatura = async (req, res) => {
 		const mutateRow = []
 		mutateRow.push({
 			name: "",
-			children: [{name: 1372174}, {name: 1372175}, {name: 1372176}],
-			id: 0,
-			parent: null,
+			children: [
+				{ name: "Frissáru" },
+				{ name: "Szárazáru" },
+				{ name: "Non Food" },
+			]
 		})
 
 		rows.map((row) => {
