@@ -15,6 +15,7 @@ exports.nomenklatura = async (req, res) => {
 		}
 
 		function getFirstChild(){
+			//create root child
 			arr= []
 			rows.filter(row => row.szint===1).map(inRow => {
 				arr.push(inRow)
@@ -31,44 +32,37 @@ exports.nomenklatura = async (req, res) => {
 			parent: null,
 		}
 
-		function getChild(childArr, szint){
-			console.log(childArr)
+		function getChild(childItem, szint){
+			//get child for nodes return children array
 			let arr = []
-				rows.filter(row => row.szint === szint).map(inRow => {
-					if (childArr.kod === inRow.kod.substring(0, childArr.kod.length)) {
-						arr.push(inRow)
-					}
-				})
-				if(arr.length > 0){
-					return arr
+			rows.filter(row => row.szint === szint).map(inRow => {
+				if (childItem.kod === inRow.kod.substring(0, childItem.kod.length)) {
+					arr.push(inRow)
 				}
+			})
+			return arr
 		}
 
-		function getAllChild2() {
-			let szint = 2
+		function getAllChild() {
+			//get second depth childrens
 			mutateRow.children.map(secondChild => {
-				
-				secondChild['children'] = getChild(secondChild, szint)
-					szint++
-		
+				secondChild['children'] = getChild(secondChild, 2)
+				//get third depth childrens
 				secondChild.children.map(thirdChild => {
-					szint++
-					thirdChild["children"] = getChild(thirdChild, szint)
-							
-					thirdArr.map(fourthChild => {
-						szint++
-						fourthChild["children"] = getChild(fourthChild, szint)
-									
-						fourthArr.map(fithChild => {
-							szint++
-							fithChild["children"] = getChild(fithChild, szint)				
+					thirdChild["children"] = getChild(thirdChild, 3)
+					//get fourth depth childrens
+					thirdChild.children.map((fourthChild) => {
+						fourthChild["children"] = getChild(fourthChild, 4)
+						//get fifth depth childrens
+						fourthChild.children.map((fithChild) => {
+							fithChild["children"] = getChild(fithChild, 5)
 						})
 					})
 				})
 			})
 		}
 
-		function getAllChild(){
+		/* function getAllChild_old(){
 			mutateRow.children.map(secondChild => {
 
 				//map second child
@@ -94,7 +88,6 @@ exports.nomenklatura = async (req, res) => {
 									thirdChild.kod ===
 									inRow2.kod.substring(0, thirdChild.kod.length)
 								) {
-									//console.log(thirdChild.kod + " vs " +inRow2.kod.substring(0, thirdChild.kod.length)								)
 									thirdArr.push(inRow2)
 								}
 							})
@@ -144,32 +137,9 @@ exports.nomenklatura = async (req, res) => {
 
 				}
 			})
-		}		
+		}		 */
 
-		getAllChild2()
-
-		/* rows.map((row) => {
-			
-				let parentId = 0
-				let childrenArray = []
-				
-				rows.map(inRow => {
-					if(row.kod.substring(0, row.kod.length -2) === inRow.kod){
-						parentId = inRow.id
-					}
-					if(inRow.szint === row.szint + 1){
-						if(inRow.kod.substring(0, row.kod.length) === row.kod){
-							childrenArray.push(inRow.id)
-						}
-					}
-				})
-
-				mutateRow.push({ name: row.nev, children: childrenArray, id: row.id, parent: parentId })
-			}
-		)
-		 */
-
-	
+		getAllChild()
 
 		res.json(mutateRow)
 	} catch (err) {
