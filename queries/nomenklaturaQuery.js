@@ -25,7 +25,7 @@ exports.nomenklatura = async (req, res) => {
 		}
 
 		const mutateRow = {
-			name: "Nomenklatúra",
+			nev: "Nomenklatúra",
 			children: getFirstChild(),
 			id: 0,
 			szint: 0,
