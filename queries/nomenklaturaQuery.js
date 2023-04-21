@@ -24,13 +24,13 @@ exports.nomenklatura = async (req, res) => {
 
 		}
 
-		const mutateRow = {
+		const mutateRow = [{
 			name: "Nomenklatúra",
 			children: getFirstChild(),
 			id: 0,
 			szint: 0,
 			parent: null,
-		}
+		}]
 
 		function getChild(childItem, szint){
 			//get child for nodes return children array
