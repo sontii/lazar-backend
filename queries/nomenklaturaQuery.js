@@ -24,13 +24,13 @@ exports.nomenklatura = async (req, res) => {
 
 		}
 
-		const mutateRow = [{
+		const mutateRow = {
 			name: "Nomenklatúra",
 			children: getFirstChild(),
 			id: 0,
 			szint: 0,
 			parent: null,
-		}]
+		}
 
 		function getChild(childItem, szint){
 			//get child for nodes return children array
@@ -42,6 +42,7 @@ exports.nomenklatura = async (req, res) => {
 			})
 			return arr
 		}
+		console.log(mutateRow)
 
 		function getAllChild() {
 			//get second depth childrens
@@ -54,8 +55,8 @@ exports.nomenklatura = async (req, res) => {
 					thirdChild.children.map((fourthChild) => {
 						fourthChild["children"] = getChild(fourthChild, 4)
 						//get fifth depth childrens
-						fourthChild.children.map((fithChild) => {
-							fithChild["children"] = getChild(fithChild, 5)
+						fourthChild.children.map((fifthChild) => {
+							fifthChild["children"] = getChild(fifthChild, 5)
 						})
 					})
 				})
