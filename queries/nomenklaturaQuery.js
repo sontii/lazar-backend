@@ -14,14 +14,20 @@ exports.nomenklatura = async (req, res) => {
 			return res.status(404).json({ msg: `Couldn't find data` })
 		}
 
-		function getFirstChild(){
-			//create root child
-			arr= []
-			rows.filter(row => row.szint===1).map(inRow => {
-				arr.push(inRow)
-			})
-			return arr
+		const filteredChild = [
+			1370785, 1372164, 1373260, 1373272, 1373273, 1373274, 1373275, 1373276,
+			1373277, 1373278, 1373296, 1373299,
+		]
 
+		function getFirstChild() {
+			//create root child
+			arr = []
+			rows
+				.filter((row) => row.szint === 1 && !filteredChild.includes(row.id))
+				.map((inRow) => {
+					arr.push(inRow)
+				})
+			return arr
 		}
 
 		const mutateRow = {
