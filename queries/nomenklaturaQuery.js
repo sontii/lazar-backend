@@ -5,7 +5,7 @@ const filteredChild = [
 	1370785, 1372164, 1373260, 1373272, 1373273, 1373274, 1373275, 1373276,
 	1373277, 1373278, 1373296, 1373299,
 ]
-const mutateRow = []
+
 
 //get blokkk date range
 exports.nomenklatura = async (req, res) => {
@@ -33,8 +33,12 @@ exports.nomenklatura = async (req, res) => {
 			return arr
 		}
 
+		const mutateRow = []
+
 		//loop trough each depth and call getChild
 		function mutateData() {
+
+			
 
 			rows
 				.filter((row) => row.szint === 1 && !filteredChild.includes(row.id))
