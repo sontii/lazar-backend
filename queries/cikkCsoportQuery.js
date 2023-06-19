@@ -29,7 +29,6 @@ exports.cikkCsoport = async (req, res) => {
 					ORDER BY mennyiseg DESC
 					LIMIT ? `
 
-		const cscs = `203040%`
 		// [start end] to '?' in query params
 		const [rows] = await pool.query(query, [
 			start,
@@ -38,8 +37,6 @@ exports.cikkCsoport = async (req, res) => {
 			egyseg,
 			parseInt(limit),
 		])		
-
-		console.log(cscs)
 
 		if (!rows[0]) {
 			return res.status(404).json({ msg: `Couldn't find data` })
