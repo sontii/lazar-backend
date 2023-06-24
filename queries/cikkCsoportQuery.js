@@ -12,7 +12,6 @@ exports.cikkCsoport = async (req, res) => {
 	try {
 		// '?' in query for sanitaze query params
 		const query = `SELECT
-						DATE_FORMAT(lazar.blokk.datum, '%Y.%m.%d') AS datum,
 						lazar.blokk.egyseg AS egyseg,
 						ROUND(sum(lazar.blokk.bteny_ert)) AS fogyar,
 						ROUND(sum(lazar.blokk.nteny_ert - lazar.blokk.nyilv_ert)) AS arres,
@@ -20,14 +19,12 @@ exports.cikkCsoport = async (req, res) => {
 						lazar.cikk.rovid_nev AS cikk_nev,
 						lazar.nomenklatura.nev AS nomemklatura,
 						lazar.nomenklatura.kod AS nomemklatura_kod
-						lazar.ean.ean_kod AS ean_kod
 					FROM blokk
 					JOIN lazar.cikk ON lazar.blokk.arukod_id = lazar.cikk.cikk_kod
-					JOIN lazar.ean ON lazar.blokk.arukod_id = lazar.ean.arukod_id
 					JOIN lazar.cikk_csoport ON lazar.cikk.cikk_id = lazar.cikk_csoport.arukod_id
 					JOIN lazar.nomenklatura ON lazar.cikk_csoport.nomen_id = lazar.nomenklatura.id
 					WHERE datum BETWEEN ? AND ? AND lazar.nomenklatura.kod LIKE ? AND egyseg = ?
-					GROUP BY datum, egyseg, cikk_nev, nomemklatura, nomemklatura_kod, ean_kod
+					GROUP BY datum, egyseg, cikk_nev, nomemklatura, nomemklatura_kod
 					ORDER BY mennyiseg DESC
 					LIMIT ? `
 
