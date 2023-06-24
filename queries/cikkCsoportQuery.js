@@ -25,7 +25,7 @@ exports.cikkCsoport = async (req, res) => {
 					JOIN lazar.cikk_csoport ON lazar.cikk.cikk_id = lazar.cikk_csoport.arukod_id
 					JOIN lazar.nomenklatura ON lazar.cikk_csoport.nomen_id = lazar.nomenklatura.id
 					WHERE datum BETWEEN ? AND ? AND lazar.nomenklatura.kod LIKE ? AND egyseg = ?
-					GROUP BY datum, egyseg, cikk_nev, nomemklatura, nomemklatura_kod
+					GROUP BY darukod, egyseg, cikk_nev, nomemklatura, nomemklatura_kod
 					ORDER BY mennyiseg DESC
 					LIMIT ? `
 
