@@ -13,6 +13,7 @@ exports.cikkCsoport = async (req, res) => {
 		// '?' in query for sanitaze query params
 		const query = `SELECT
 						lazar.blokk.egyseg AS egyseg,
+						lazar.blokk.arukod_id AS arukod,
 						ROUND(sum(lazar.blokk.bteny_ert)) AS fogyar,
 						ROUND(sum(lazar.blokk.nteny_ert - lazar.blokk.nyilv_ert)) AS arres,
 						ROUND(sum(lazar.blokk.menny), 2) AS mennyiseg,
