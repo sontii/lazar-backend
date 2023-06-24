@@ -18,14 +18,17 @@ exports.cikkCsoport = async (req, res) => {
 						ROUND(sum(lazar.blokk.nteny_ert - lazar.blokk.nyilv_ert)) AS arres,
 						ROUND(sum(lazar.blokk.menny), 2) AS mennyiseg,
 						lazar.cikk.rovid_nev AS cikk_nev,
+						lazar.cikk.cikk_id AS cikk_id,
 						lazar.nomenklatura.nev AS nomemklatura,
-						lazar.nomenklatura.kod AS nomemklatura_kod
+						lazar.nomenklatura.kod AS nomemklatura_kod,
+						lazar.ean.ean_kod AS ean
 					FROM blokk
 					JOIN lazar.cikk ON lazar.blokk.arukod_id = lazar.cikk.cikk_kod
+					LEFT JOIN lazar.ean ON lazar.cikk.cikk_id = lazar.ean.arukod_id
 					JOIN lazar.cikk_csoport ON lazar.cikk.cikk_id = lazar.cikk_csoport.arukod_id
 					JOIN lazar.nomenklatura ON lazar.cikk_csoport.nomen_id = lazar.nomenklatura.id
 					WHERE datum BETWEEN ? AND ? AND lazar.nomenklatura.kod LIKE ? AND egyseg = ?
-					GROUP BY arukod, egyseg, cikk_nev, nomemklatura, nomemklatura_kod
+					GROUP BY arukod, egyseg, cikk_nev, cikk_id, nomemklatura, nomemklatura_kod, ean
 					ORDER BY mennyiseg DESC
 					LIMIT ? `
 
