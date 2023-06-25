@@ -21,7 +21,7 @@ exports.cikkCsoport = async (req, res) => {
 						lazar.cikk.cikk_id AS cikk_id,
 						lazar.nomenklatura.nev AS nomemklatura,
 						lazar.nomenklatura.kod AS nomemklatura_kod,
-						lazar.ean.ean_kod AS ean
+						MAX(lazar.ean.ean_kod) AS ean
 					FROM blokk
 					JOIN lazar.cikk ON lazar.blokk.arukod_id = lazar.cikk.cikk_kod
 					LEFT JOIN lazar.ean ON lazar.cikk.cikk_id = lazar.ean.arukod_id
