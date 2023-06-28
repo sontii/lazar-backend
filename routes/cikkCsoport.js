@@ -8,6 +8,6 @@ router.get('/', (req, res) => {
 	res.send('API is running')
 });
 
-router.get("/:start/:end/:egyseg/:csoport/:limit" , authenticateToken, cikkCsoport.cikkCsoport)
+router.get("/:start/:end/:egyseg/:csoport/:limit" , /* authenticateToken, */ cikkCsoport.cikkCsoport)
 
 module.exports = router
