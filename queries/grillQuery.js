@@ -11,14 +11,14 @@ exports.grill = async (req, res) => {
 		const query = `SELECT
 						lazar.blokk.datum, sum(lazar.blokk.menny), sum(lazar.blokk.nteny_ert), sum(lazar.blokk.bteny_ert)
 						FROM lazar.blokk
-						JOIN lazar.cikk ON lazar.blokk.arukod_id = lazar.cikk.cikk_kod
-						WHERE datum BETWEEN ? AND ? AND
+						JOIN lazar.cikk ON lazar.cikk.cikk_kod = lazar.blokk.arukod_id
+						WHERE lazar.blokk.datum BETWEEN ? AND ? AND
 							lazar.blokk.egyseg = ? AND
-							lazar.cikk.rovid_nev LIKE "NP-%" OR
+							(lazar.cikk.rovid_nev LIKE "NP-%" OR
 							lazar.cikk.rovid_nev LIKE "Np-%" OR
 							lazar.cikk.rovid_nev LIKE 'np-%' OR
 							lazar.cikk.rovid_nev LIKE 'K-%' OR
-							lazar.cikk.rovid_nev LIKE 'k-%' AND
+							lazar.cikk.rovid_nev LIKE 'k-%') AND
 							lazar.blokk.arukod_id NOT IN(
 													8000462000,
 													8000457000,
