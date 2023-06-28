@@ -74,7 +74,7 @@ app.post("/api/auth/changepass", authenticateToken, async (req, res) => {
 		//create hashed password from body password
 		const hashedPassword = await bcrypt.hash(req.body.password, 10)
 		// "?" in query for sanitaze query params
-		const query = `UPDATE users SET password = ? WHERE user (?, ?)`
+		const query = `UPDATE users SET password = ? WHERE user = ? (?, ?)`
 		const [rows] = await pool.query(query, [hashedPassword, req.body.email])
 		// [param?, param?] to "?" in query params
 
