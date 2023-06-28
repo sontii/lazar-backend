@@ -1,6 +1,7 @@
 require("dotenv").config()
 const express = require('express')
 const cors = require("cors")
+const authenticateToken = require("./middleware/authtoken")
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 const app = express()
@@ -36,7 +37,7 @@ app.post("/api/auth/token", async (req, res) => {
 })
 
 
-app.post("/api/auth/register", async (req, res) => {
+app.post("/api/auth/register", authenticateToken, async (req, res) => {
 	//check if user already exist
 	try {
 		// "?" in query for sanitaze query params
@@ -48,7 +49,6 @@ app.post("/api/auth/register", async (req, res) => {
 		if (queryResult[0]) {
 			return res.status(403).send({ msg: "Already exist" })
 		}
-
 	} catch (err) {
 		res.status(500).send({ msg: "Server error" })
 	}
@@ -60,6 +60,22 @@ app.post("/api/auth/register", async (req, res) => {
 		// "?" in query for sanitaze query params
 		const query = `INSERT INTO users (user, password) VALUES (?, ?)`
 		const [rows] = await pool.query(query, [req.body.email, hashedPassword])
+		// [param?, param?] to "?" in query params
+
+		res.status(201).send()
+	} catch (err) {
+		res.status(500).send(err.message)
+	}
+})
+
+app.post("/api/auth/changepass", authenticateToken, async (req, res) => {
+	// Change pass for user
+	try {
+		//create hashed password from body password
+		const hashedPassword = await bcrypt.hash(req.body.password, 10)
+		// "?" in query for sanitaze query params
+		const query = `UPDATE users SET password = ? WHERE user (?, ?)`
+		const [rows] = await pool.query(query, [hashedPassword, req.body.email])
 		// [param?, param?] to "?" in query params
 
 		res.status(201).send()
