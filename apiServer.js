@@ -5,8 +5,9 @@ const app = express()
 const port = process.env.API_PORT
 const blokkRouter = require('./routes/blokk')
 const cikkCsoportRouter = require('./routes/cikkCsoport')
-const grillRouter = require("./routes/grill")
-const grillNpRouter = require("./routes/grillNp")
+const grillRouter = require('./routes/grill')
+const grillNpRouter = require('./routes/grillNp')
+const grillBeszRouter = require('./routes/grillBesz')
 const nomenklaturaRouter = require('./routes/nomenklatura')
 
 //const router = express.Router();
@@ -20,12 +21,16 @@ app.get("/api", async (req, res) => {
 
 app.use("/api/blokk", blokkRouter)
 app.use("/api/cikkcs", cikkCsoportRouter)
-//grill blokk
+app.use("/api/nomenklatura", nomenklaturaRouter)
+
+//grill forgalom blokk
 app.use("/api/grill", grillRouter)
 
-//grill blokk NP
+//grill forgalom blokk NetPincér
 app.use("/api/grillnp", grillNpRouter)
 
-app.use("/api/nomenklatura", nomenklaturaRouter)
+//grill beszerzes
+app.use("/api/grillbesz", grillBeszRouter)
+
 
 app.listen(port, '0.0.0.0')
