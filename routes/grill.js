@@ -8,6 +8,6 @@ router.get('/', (req, res) => {
 	res.send('API is running')
 });
 
-router.get("/:start/:end/:egyseg", authenticateToken, grill.grill)
+router.get("/:start/:end", authenticateToken, grill.grill)
 
 module.exports = router

@@ -9,11 +9,10 @@ exports.grill = async (req, res) => {
 	try {
 		// '?' in query for sanitaze query params
 		const query = `SELECT
-						lazar.blokk.datum, sum(lazar.blokk.menny) AS menniseg, sum(lazar.blokk.nteny_ert) AS netto, sum(lazar.blokk.bteny_ert) AS brutto
+						lazar.blokk.datum, sum(lazar.blokk.menny) AS menniseg, sum(lazar.blokk.nteny_ert) AS netto, sum(lazar.blokk.bteny_ert) AS brutto, lazar.blokk.egyseg AS egyeg
 						FROM lazar.blokk
 						JOIN lazar.cikk ON lazar.cikk.cikk_kod = lazar.blokk.arukod_id
 						WHERE lazar.blokk.datum BETWEEN ? AND ? AND
-							lazar.blokk.egyseg = ? AND
 							(lazar.cikk.rovid_nev LIKE "NP-%" OR
 							lazar.cikk.rovid_nev LIKE "Np-%" OR
 							lazar.cikk.rovid_nev LIKE 'np-%' OR
@@ -61,7 +60,7 @@ exports.grill = async (req, res) => {
 													4806693000,
 													6906442816
 													)
-									GROUP BY lazar.blokk.datum
+									GROUP BY lazar.blokk.datum, lazar.blokk.egyseg
 									`
 
 		// [start end] to '?' in query params
