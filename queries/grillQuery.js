@@ -9,7 +9,7 @@ exports.grill = async (req, res) => {
 	try {
 		// '?' in query for sanitaze query params
 		const query = `SELECT
-						lazar.blokk.datum, sum(lazar.blokk.menny), sum(lazar.blokk.nteny_ert), sum(lazar.blokk.bteny_ert)
+						lazar.blokk.datum, sum(lazar.blokk.menny) AS menniseg, sum(lazar.blokk.nteny_ert) AS netto, sum(lazar.blokk.bteny_ert) AS brutto
 						FROM lazar.blokk
 						JOIN lazar.cikk ON lazar.cikk.cikk_kod = lazar.blokk.arukod_id
 						WHERE lazar.blokk.datum BETWEEN ? AND ? AND
