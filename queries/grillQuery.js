@@ -9,12 +9,13 @@ exports.grill = async (req, res) => {
 	try {
 		// '?' in query for sanitaze query params
 		const query = `SELECT
-						lazar.blokk.datum, sum(lazar.blokk.menny) AS menniseg, sum(lazar.blokk.nteny_ert) AS netto, sum(lazar.blokk.bteny_ert) AS brutto, lazar.blokk.egyseg AS egyeg
+						lazar.blokk.datum AS datum, sum(lazar.blokk.menny) AS menniseg, sum(lazar.blokk.nteny_ert) AS netto, sum(lazar.blokk.bteny_ert) AS brutto, lazar.blokk.egyseg AS egyseg
 						FROM lazar.blokk
 						JOIN lazar.cikk ON lazar.cikk.cikk_kod = lazar.blokk.arukod_id
 						WHERE lazar.blokk.datum BETWEEN ? AND ? AND
 							(lazar.cikk.rovid_nev LIKE "NP-%" OR
 							lazar.cikk.rovid_nev LIKE "Np-%" OR
+							lazar.cikk.rovid_nev LIKE "nP-%" OR
 							lazar.cikk.rovid_nev LIKE 'np-%' OR
 							lazar.cikk.rovid_nev LIKE 'K-%' OR
 							lazar.cikk.rovid_nev LIKE 'k-%') AND
@@ -64,7 +65,7 @@ exports.grill = async (req, res) => {
 									`
 
 		// [start end] to '?' in query params
-		const [rows] = await pool.query(query, [start,end, egyseg])		
+		const [rows] = await pool.query(query, [start,end])		
 
 		if (!rows[0]) {
 			return res.status(404).json({ msg: `Couldn't find data` })

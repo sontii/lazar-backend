@@ -9,17 +9,18 @@ exports.grillNp = async (req, res) => {
 	try {
 		// '?' in query for sanitaze query params
 		const query = `SELECT
-						sum(lazar.blokk.menny), sum(lazar.blokk.nteny_ert), sum(lazar.blokk.bteny_ert)
+						lazar.blokk.datum AS datum, sum(lazar.blokk.menny)AS mennyiseg, sum(lazar.blokk.nteny_ert) as netto, sum(lazar.blokk.bteny_ert) As brutto, lazar.blokk.egyseg AS egyseg
 						FROM lazar.blokk
 						JOIN lazar.cikk ON lazar.cikk.cikk_kod = lazar.blokk.arukod_id
 						WHERE lazar.blokk.datum BETWEEN ? AND ? AND
-							lazar.blokk.egyseg = ? AND
 							(lazar.cikk.rovid_nev LIKE "NP-%" OR
 							lazar.cikk.rovid_nev LIKE "Np-%" OR
-							lazar.cikk.rovid_nev LIKE 'np-%')`
+							lazar.cikk.rovid_nev LIKE "nP-%" OR
+							lazar.cikk.rovid_nev LIKE 'np-%')
+							GROUP BY lazar.blokk.datum, lazar.blokk.egyseg`
 
 		// [start end] to '?' in query params
-		const [rows] = await pool.query(query, [start,end, egyseg])		
+		const [rows] = await pool.query(query, [start,end])		
 
 		if (!rows[0]) {
 			return res.status(404).json({ msg: `Couldn't find data` })

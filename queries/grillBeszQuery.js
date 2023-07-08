@@ -9,17 +9,13 @@ exports.grillBesz = async (req, res) => {
 	try {
 		// '?' in query for sanitaze query params
 		const query = `SELECT
-						sum(lazar.blokk.menny), sum(lazar.blokk.nteny_ert), sum(lazar.blokk.bteny_ert)
-						FROM lazar.blokk
-						JOIN lazar.cikk ON lazar.cikk.cikk_kod = lazar.blokk.arukod_id
-						WHERE lazar.blokk.datum BETWEEN ? AND ? AND
-							lazar.blokk.egyseg = ? AND
-							(lazar.cikk.rovid_nev LIKE "NP-%" OR
-							lazar.cikk.rovid_nev LIKE "Np-%" OR
-							lazar.cikk.rovid_nev LIKE 'np-%')`
+						lazar.grill_besz.datum AS datum, lazar.grill_besz.ertek AS ertek, lazar.grill_besz.minosito_kod AS minosito, lazar.grill_besz.egyseg AS egyseg
+						FROM lazar.grill_besz
+						WHERE lazar.grill_besz.datum BETWEEN ? AND ?
+						GROUP BY lazar.grill_besz.datum, lazar.grill_besz.ertek, lazar.grill_besz.egyseg, lazar.grill_besz.minosito_kod`
 
 		// [start end] to '?' in query params
-		const [rows] = await pool.query(query, [start,end, egyseg])		
+		const [rows] = await pool.query(query, [start,end])		
 
 		if (!rows[0]) {
 			return res.status(404).json({ msg: `Couldn't find data` })
