@@ -6,8 +6,6 @@ const port = process.env.API_PORT
 const blokkRouter = require('./routes/blokk')
 const cikkCsoportRouter = require('./routes/cikkCsoport')
 const grillRouter = require('./routes/grill')
-const grillNpRouter = require('./routes/grillNp')
-const grillBeszRouter = require('./routes/grillBesz')
 const nomenklaturaRouter = require('./routes/nomenklatura')
 
 //const router = express.Router();
