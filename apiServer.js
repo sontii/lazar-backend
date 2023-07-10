@@ -22,15 +22,6 @@ app.get("/api", async (req, res) => {
 app.use("/api/blokk", blokkRouter)
 app.use("/api/cikkcs", cikkCsoportRouter)
 app.use("/api/nomenklatura", nomenklaturaRouter)
-
-//grill forgalom blokk
 app.use("/api/grill", grillRouter)
-
-//grill forgalom blokk NetPincér
-app.use("/api/grillnp", grillNpRouter)
-
-//grill beszerzes
-app.use("/api/grillbesz", grillBeszRouter)
-
 
 app.listen(port, '0.0.0.0')
