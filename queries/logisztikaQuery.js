@@ -8,7 +8,13 @@ exports.logisztika = async (req, res) => {
 
 	try {
 		// '?' in query for sanitaze query params
-		const query = `SELECT * FROM lazar.logisztika
+		const query = `SELECT
+						datum,
+						ROUND(brutto_fogy, 0),
+						ROUND(netto_fogy, 0),
+						ROUND(netto_nyilv, 0),
+						ROUND(vevo, 0)
+						FROM lazar.logisztika
 						WHERE lazar.logisztika.datum BETWEEN ? AND ?`
 
 		// [start end] to '?' in query params
