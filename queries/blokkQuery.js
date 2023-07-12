@@ -7,7 +7,7 @@ exports.blokkRange = async (req, res) => {
 
 	try {
 		// '?' in query for sanitaze query params
-		const query = `SELECT *	FROM blokk_summ_view WHERE datum BETWEEN ? AND ?`
+		const query = `SELECT *	FROM blokk_sum_view WHERE datum BETWEEN ? AND ?`
 
 		// [start end] to '?' in query params
 		const [rows] = await pool.query(query, [start, end])
