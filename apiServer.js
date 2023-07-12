@@ -4,6 +4,7 @@ const cors = require("cors")
 const app = express()
 const port = process.env.API_PORT
 const blokkRouter = require('./routes/blokk')
+const blokkTrafikRouter = require("./routes/blokkTrafik")
 const cikkCsoportRouter = require('./routes/cikkCsoport')
 const grillRouter = require('./routes/grill')
 const nomenklaturaRouter = require('./routes/nomenklatura')
@@ -18,6 +19,7 @@ app.get("/api", async (req, res) => {
 })
 
 app.use("/api/blokk", blokkRouter)
+app.use("/api/blokktrafik", blokkTrafikRouter)
 app.use("/api/cikkcs", cikkCsoportRouter)
 app.use("/api/nomenklatura", nomenklaturaRouter)
 app.use("/api/grill", grillRouter)
